@@ -1,7 +1,7 @@
 <h1 align="center">Hi, I'm Rushik Pendyala 👋</h1>
 
 <p align="center">
-  <b>3rd-year B.Tech ECE · CGPA 9.12</b> · On-device AI &amp; full-stack engineer<br/>
+  <b>4th-year B.Tech ECE · CGPA 9.12</b> · On-device AI &amp; full-stack engineer<br/>
   Building intelligent systems that run where they're needed — on the edge, in the browser, and in between.
 </p>
 
