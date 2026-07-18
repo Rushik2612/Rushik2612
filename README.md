@@ -1,57 +1,87 @@
-<h1 align="center">Hi, I'm Rushik Pendyala 👋</h1>
+﻿# Hi, I'm Rushik 👋
 
-<p align="center">
-  <b>3rd-year B.Tech ECE · CGPA 9.12</b> · On-device AI &amp; full-stack engineer<br/>
-  Building intelligent systems that run where they're needed — on the edge, in the browser, and in between.
-</p>
-
-<p align="center">
-  <a href="mailto:pendyalarushik26@gmail.com"><img src="https://img.shields.io/badge/Email-pendyalarushik26@gmail.com-D14836?logo=gmail&logoColor=white"></a>
-  <img src="https://img.shields.io/badge/Focus-On--device%20AI%20%7C%20Embedded%20%7C%20Full--stack-4c1">
-</p>
+**AI/ML Engineer | Embedded Systems | VLSI Design**  
+Electronics & Computer Engineering @ Anurag University, Hyderabad (2023–2027)
 
 ---
 
-## 🎯 What I focus on
+## 🎯 What I build
 
-- **On-device / edge AI** — running models on Raspberry Pi, ESP32, and microcontrollers (TensorFlow Lite, Vosk, offline inference).
-- **Embedded systems & signal processing** — voice interfaces, EEG/BCI, sensor pipelines, real-time control.
-- **Full-stack deployment** — Spring Boot + React apps, dockerized and shipped end-to-end.
-- **Agentic LLM systems** — LLMs that take actions, retrieve context (RAG/MCP), and are evaluated *honestly*.
+I design intelligent systems that blend AI with hardware — from computer vision on drones to neural signal processing on embedded devices. Currently hunting for roles in **AI/ML Engineering**, **Embedded Firmware**, or **VLSI Design/Verification** at **12 LPA+**.
 
-I care about **real validation over demo numbers** — knowing the difference between a metric that looks good and a model that actually works.
-
-## 🧰 Tech Stack
-
-**Languages** &nbsp;·&nbsp; Python · Java · C/C++ · JavaScript · SQL
-
-**AI/ML** &nbsp;·&nbsp; scikit-learn · TensorFlow Lite · Vosk · Groq / Gemini LLMs · llama-index (RAG) · MCP
-
-**Backend** &nbsp;·&nbsp; Spring Boot · Flask · REST · JWT · JPA/Hibernate · MySQL · PostgreSQL
-
-**Frontend** &nbsp;·&nbsp; React · Vite · Zustand · Recharts
-
-**Embedded / Hardware** &nbsp;·&nbsp; Raspberry Pi · ESP32 · Arduino · BioAmp EXG · PyAudio · pygame
-
-**Infra** &nbsp;·&nbsp; Docker · Docker Compose · Nginx · Git
-
-## 🚀 Featured Projects
-
-| Project | What it is | Stack |
-|---|---|---|
-| [**🏋️ JimBro**](https://github.com/Rushik2612/jimbro) | Agentic AI fitness coach — an LLM that *executes actions* (logs lifts, rewrites diet/workout plans), not just chats | Spring Boot · React · Groq LLaMA · Docker |
-| [**🛗 Voice-Controlled Elevator**](https://github.com/Rushik2612/voice-controlled-elevator) | Fully offline, touchless elevator control on Raspberry Pi 4, with mid-travel emergency stop | Raspberry Pi · Vosk · PyAudio · pygame · Piper TTS |
-| [**🧠 EEG-BCI**](https://github.com/Rushik2612/eeg-bci) | Brain-signal → smart-board control, with an honest lab-to-live generalization-gap analysis (99.7% offline → ~50% live) | scikit-learn · Random Forest · BioAmp EXG · Flask |
-| [**🔍 Firmix**](https://github.com/Rushik2612/firmix) | Agentic bug hunter for ATE test-program C++ code (RAG over MCP + LLM) — case study of a deprioritized research project | Gemini · llama-index · FastMCP · Python |
-| [**🏠 Habitat**](https://github.com/Rushik2612/habitat) | Smart-home dashboard: rooms &amp; devices with stateless JWT auth and per-user isolation | Spring Boot · React · JWT · MySQL · Docker |
+---
 
 ## 💼 Experience
 
-- **VAYU RAKSHAK** — Defense UAV internship: hardware integration and computer vision on embedded platforms.
+**Research Engineer @ Vayu Rakshak** *(Jul–Oct 2025)*  
+High-speed defense UAV with CV-based target detection. Presented at national defense exhibition.
 
-## 📫 Reach me
+**Research Involvement @ Anurag University Space Research Center**  
+Drone R&D — hardware integration, sensor fusion, autonomous systems.
 
-- 📧 **pendyalarushik26@gmail.com**
-- 💻 [github.com/Rushik2612](https://github.com/Rushik2612)
+---
 
-<p align="center"><i>Open to AI/ML Engineer and Embedded Systems roles.</i></p>
+## 🚀 Featured Projects
+
+### [**JimBro**](https://github.com/Rushik2612/jimbro) — AI Fitness Coach
+Full-stack LLM-powered platform (Spring Boot + React + Groq LLaMA) that gives personalized workout advice.  
+**Live demo:** https://jimbro.onrender.com  
+**Stack:** Spring Boot, React, Groq API, Docker, Render  
+![Stars](https://img.shields.io/badge/Live-Demo-brightgreen)
+
+### [**Voice-Controlled Elevator**](https://github.com/Rushik2612/voice-controlled-elevator) — Embedded Speech Recognition
+Raspberry Pi 4 + Arduino-based elevator controller using Vosk STT with wake-word detection and audio resampling.  
+**Stack:** Vosk, Python, Arduino, Raspberry Pi, audioop  
+![Status](https://img.shields.io/badge/Hardware-Embedded-blue)
+
+### [**EEG-BCI**](https://github.com/Rushik2612/eeg-bci) — Neural Signal Classification
+Brain-computer interface with 99.7% test accuracy on EEG signal classification (reveals generalization gap in live scenarios — research finding).  
+**Stack:** PyTorch, scikit-learn, signal processing, neural networks  
+![Accuracy](https://img.shields.io/badge/Accuracy-99.7%25-green)
+
+### [**Firmix**](https://github.com/Rushik2612/firmix) — Firmware Security Analyzer
+AST-based vulnerability detection + LLM-generated remediation using FAISS RAG retrieval.  
+**Stack:** Python, tree-sitter, FAISS, LLM, Flask  
+![Security](https://img.shields.io/badge/Security-Analysis-orange)
+
+---
+
+## 🛠️ Tech Stack
+
+**Languages:** Python, C/C++, Java, JavaScript, Verilog  
+**AI/ML:** PyTorch, TensorFlow, scikit-learn, Groq, FAISS, LLM APIs  
+**Backend:** Spring Boot, Flask, Node.js, Docker  
+**Frontend:** React, HTML/CSS  
+**Embedded:** Raspberry Pi, Arduino, ESP32, Vosk STT, sensor fusion  
+**Hardware:** Vivado (FPGA), Mentor Graphics (VLSI), LiDAR, SLAM  
+**Other:** Git, Linux, SQL, REST APIs, signal processing
+
+---
+
+## 📊 Highlights
+
+- **9.12–9.33 CGPA** | ECE @ Anurag University
+- **Research** in drone autonomy & Space Research Center
+- **PwC Cybersecurity Hackathon** — solved levels 2–4 in hands-on hacking challenge
+- **Full-stack builder** — hardware to cloud, firmware to frontend
+
+---
+
+## 🎓 What I'm learning
+
+- Advanced ML system design & production deployment
+- VLSI design & verification workflows
+- Low-power embedded AI
+- Distributed systems & scalability
+
+---
+
+## 📬 Let's connect
+
+- **GitHub:** https://github.com/Rushik2612
+- **LinkedIn:** [Add your LinkedIn profile URL]
+- **Email:** [Your email address]
+
+---
+
+*"Code that moves iron and minds — that's the sweet spot."*
