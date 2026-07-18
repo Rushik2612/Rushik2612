@@ -79,8 +79,8 @@ AST-based vulnerability detection + LLM-generated remediation using FAISS RAG re
 ## 📬 Let's connect
 
 - **GitHub:** https://github.com/Rushik2612
-- **LinkedIn:** [Add your LinkedIn profile URL]
-- **Email:** [Your email address]
+- **LinkedIn:** [https://www.linkedin.com/in/rushikpendyala/]
+- **Email:** [pendyalarushik@gmail.com]
 
 ---
 
