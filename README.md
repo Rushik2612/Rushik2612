@@ -1,87 +1,138 @@
-﻿# Hi, I'm Rushik 👋
+# EdgeHRC — Edge Hand-gesture Robot Control
 
-**AI/ML Engineer | Embedded Systems | VLSI Design**  
-Electronics & Computer Engineering @ Anurag University, Hyderabad (2023–2027)
+Real-time hand gesture recognition for touchless robot control, running fully on a
+laptop CPU (no cloud). A lightweight CNN (MobileNetV2) is fine-tuned on a small
+self-recorded dataset, exported to ONNX and quantized to INT8 with ONNX Runtime.
+The project measures how much faster and smaller the INT8 model is, and how much
+accuracy it loses.
 
----
+| Class | Gesture | Robot command |
+|---|---|---|
+| 0 `stop` | open palm | STOP |
+| 1 `resume` | thumbs up | RESUME |
+| 2 `pause` | fist | PAUSE |
+| 3 `none` | no hand / other gesture | no command |
 
-## 🎯 What I build
+## Pipeline
 
-I design intelligent systems that blend AI with hardware — from computer vision on drones to neural signal processing on embedded devices. Currently hunting for roles in **AI/ML Engineering**, **Embedded Firmware**, or **VLSI Design/Verification** at **12 LPA+**.
+```
+capture.py -> data/raw/<class>/            record webcam frames per session
+make_splits.py -> data/splits/*.csv         70/15/15 split BY SESSION
+train.py -> models/fp32.pth                 MobileNetV2, frozen then fine-tuned
+evaluate.py                                 accuracy, precision/recall, confusion matrix
+export_onnx.py -> models/fp32.onnx          fixed 1x3x128x128 input, checked vs PyTorch
+quantize.py -> models/int8.onnx             static INT8, QDQ, per-channel, 300 calib images
+benchmark.py -> results/benchmark.{json,md} PyTorch FP32 vs ONNX FP32 vs ONNX INT8
+infer_webcam.py                             live demo with INT8 (or --fp32)
+run_all.py                                  runs make_splits ... benchmark in one go
+```
 
----
+All scripts share one preprocessing function (`src/preprocess.py`: 128x128 RGB,
+ImageNet normalization), so training, quantization calibration, benchmarking and the
+live demo all see images in exactly the same format.
 
-## 💼 Experience
+## Folder layout
 
-**Research Engineer @ Vayu Rakshak** *(Jul–Oct 2025)*  
-High-speed defense UAV with CV-based target detection. Presented at national defense exhibition.
+```
+data/raw/<class>/   recorded images: <session>__<class>__<index>.jpg
+data/splits/        train.csv, val.csv, test.csv
+src/                all code
+models/             fp32.pth, fp32.onnx, int8.onnx
+results/            logs, metrics, plots, benchmark
+docs/notes.md       plain-English explanation of every phase and key concepts
+```
 
-**Research Involvement @ Anurag University Space Research Center**  
-Drone R&D — hardware integration, sensor fusion, autonomous systems.
+## Setup (Windows or Linux, Python 3.10+)
 
----
+```bash
+python -m venv .venv
+# Linux/macOS:
+source .venv/bin/activate
+# Windows (PowerShell):
+.venv\Scripts\Activate.ps1
 
-## 🚀 Featured Projects
+pip install -r requirements.txt
+```
 
-### [**JimBro**](https://github.com/Rushik2612/jimbro) — AI Fitness Coach
-Full-stack LLM-powered platform (Spring Boot + React + Groq LLaMA) that gives personalized workout advice.  
-**Live demo:** https://jimbro.onrender.com  
-**Stack:** Spring Boot, React, Groq API, Docker, Render  
-![Stars](https://img.shields.io/badge/Live-Demo-brightgreen)
+Run every command from the project folder (the one containing `src/`).
 
-### [**Voice-Controlled Elevator**](https://github.com/Rushik2612/voice-controlled-elevator) — Embedded Speech Recognition
-Raspberry Pi 4 + Arduino-based elevator controller using Vosk STT with wake-word detection and audio resampling.  
-**Stack:** Vosk, Python, Arduino, Raspberry Pi, audioop  
-![Status](https://img.shields.io/badge/Hardware-Embedded-blue)
+## 1. Record data
 
-### [**EEG-BCI**](https://github.com/Rushik2612/eeg-bci) — Neural Signal Classification
-Brain-computer interface with 99.7% test accuracy on EEG signal classification (reveals generalization gap in live scenarios — research finding).  
-**Stack:** PyTorch, scikit-learn, signal processing, neural networks  
-![Accuracy](https://img.shields.io/badge/Accuracy-99.7%25-green)
+```bash
+python src/capture.py
+```
 
-### [**Firmix**](https://github.com/Rushik2612/firmix) — Firmware Security Analyzer
-AST-based vulnerability detection + LLM-generated remediation using FAISS RAG retrieval.  
-**Stack:** Python, tree-sitter, FAISS, LLM, Flask  
-![Security](https://img.shields.io/badge/Security-Analysis-orange)
+Type a session name (e.g. `rushik-desk-morning`). A preview window opens. Hold a
+gesture and press the key to save the current frame (hold the key to save a burst):
 
----
+| Key | Saves to |
+|---|---|
+| `1` | `data/raw/stop/` (open palm) |
+| `2` | `data/raw/resume/` (thumbs up) |
+| `3` | `data/raw/pause/` (fist) |
+| `4` | `data/raw/none/` (no hand, or any other gesture) |
+| `q` | quit |
 
-## 🛠️ Tech Stack
+The window shows per-class counts for this session and in total.
 
-**Languages:** Python, C/C++, Java, JavaScript, Verilog  
-**AI/ML:** PyTorch, TensorFlow, scikit-learn, Groq, FAISS, LLM APIs  
-**Backend:** Spring Boot, Flask, Node.js, Docker  
-**Frontend:** React, HTML/CSS  
-**Embedded:** Raspberry Pi, Arduino, ESP32, Vosk STT, sensor fusion  
-**Hardware:** Vivado (FPGA), Mentor Graphics (VLSI), LiDAR, SLAM  
-**Other:** Git, Linux, SQL, REST APIs, signal processing
+Tips:
+- Record **at least 7 sessions** (more is better, e.g. 10). The split is done by
+  session, so with 7 sessions you get roughly 5 train / 1 val / 1 test.
+- Record **all four classes in every session**, with roughly balanced counts
+  (e.g. 100–200 images per class per session).
+- Change something between sessions: room, lighting, background, distance, hand,
+  clothes, time of day. This is what makes the test set meaningful.
+- Move the hand around (position, angle, distance) while saving.
+- For `none`, include an empty scene, your face/body without a gesture, and other
+  hand shapes (pointing, peace sign, waving).
 
----
+## 2. Train, evaluate, export, quantize, benchmark
 
-## 📊 Highlights
+```bash
+python src/run_all.py
+```
 
-- **9.12–9.33 CGPA** | ECE @ Anurag University
-- **Research** in drone autonomy & Space Research Center
-- **PwC Cybersecurity Hackathon** — solved levels 2–4 in hands-on hacking challenge
-- **Full-stack builder** — hardware to cloud, firmware to frontend
+Options: `--epochs 20 --freeze-epochs 5 --runs 500`. The first run downloads the
+ImageNet MobileNetV2 weights (needs internet once). Each step can also be run on its
+own, e.g. `python src/evaluate.py --model models/int8.onnx --split test`.
 
----
+## 3. Live demo
 
-## 🎓 What I'm learning
+```bash
+python src/infer_webcam.py          # INT8 model (default)
+python src/infer_webcam.py --fp32   # FP32 ONNX model, for comparison
+```
 
-- Advanced ML system design & production deployment
-- VLSI design & verification workflows
-- Low-power embedded AI
-- Distributed systems & scalability
+Other options: `--camera 1` (another webcam), `--threads 4`, `--min-conf 0.6`
+(below this confidence no command is issued). Press `q` to quit. The overlay shows
+the gesture, robot command, confidence, model latency (inference only) and loop FPS
+(the whole capture → preprocess → inference → display loop) separately.
 
----
+## Results
 
-## 📬 Let's connect
+All numbers below are generated by `src/update_readme.py` from the files in
+`results/` (it runs at the end of `run_all.py`). Nothing is typed in by hand.
 
-- **GitHub:** https://github.com/Rushik2612
-- **LinkedIn:** [https://www.linkedin.com/in/rushikpendyala/]
-- **Email:** [pendyalarushik@gmail.com]
+<!-- RESULTS:START -->
+_No results yet. Run `python src/run_all.py` to generate them._
+<!-- RESULTS:END -->
 
----
+## Limitations
 
-*"Code that moves iron and minds — that's the sweet spot."*
+- **Not a certified safety system.** This is a student demo. It must not be the only
+  way to stop a real robot; a physical emergency stop and proper safety engineering
+  are still required.
+- **Single 2D camera.** No depth; sensitive to viewpoint, occlusion, lighting and
+  backgrounds that differ from the recorded ones. Only one hand/person is assumed.
+- **Small self-recorded dataset.** Few people, rooms and sessions, so the test
+  accuracy says how well it works in conditions like the recordings, not in general.
+- Classifies each frame independently (no temporal smoothing), so single-frame
+  flicker is possible.
+- Latency numbers depend on the CPU, thread count, power mode and background load;
+  they are only comparable between runs on the same machine (see `results/benchmark.md`).
+
+## Reproducibility
+
+Random seeds are fixed (`SEED = 42` in `src/config.py`). The test set is used only for
+final evaluation (after training) and in the benchmark; model selection uses the
+validation set.

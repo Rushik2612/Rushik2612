@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+# Recorded images and trained models are large; keep them out of git.
+data/raw/*/*.jpg
+models/*.pth
+models/*.onnx
