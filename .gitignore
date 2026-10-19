@@ -6,3 +6,5 @@ venv/
 data/raw/*/*.jpg
 models/*.pth
 models/*.onnx
+# Downloaded open dataset
+hagrid_download/

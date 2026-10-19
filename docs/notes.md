@@ -36,7 +36,21 @@ production. Having one function removes that whole class of bug.
 Why 128×128 and not the usual 224×224? Fewer pixels = roughly 3× less computation, and
 a hand gesture filling a good part of the frame is still clearly recognisable.
 
-### Recording (`src/capture.py`)
+### Open data: HaGRID (`src/prepare_hagrid.py`)
+HaGRID is a public dataset of hand-gesture photos from thousands of people, where every
+hand has a bounding box, a label and an anonymous user id. Three of its gestures match
+ours directly (`palm`, `like`, `fist`). For `none` the script uses other gestures (peace,
+ok, call, ...), relaxed hands (`no_gesture`) and random background patches with no hand,
+because in real use "none" means both "no hand" and "a hand doing something else".
+Some HaGRID v2 gestures (e.g. `stop`, `grip`) look almost like our commands, so they are
+left out instead of being called "none" (that would teach the model contradictions).
+Each sample is a square crop around the hand with some context (2.5× the hand box), so
+the hand fills a similar part of the image as when you hold it up to a webcam. The
+user id becomes the session id, so the split is by person: test people never appear in
+training. Remaining gap: HaGRID photos are taken from further away, with phone cameras,
+in other rooms than your webcam, so live performance can be worse than test accuracy.
+
+### Recording your own data (`src/capture.py`)
 You type a session name, then press keys 1–4 to save frames to the class folders.
 The file name contains the session id (`<session>__<class>__<index>.jpg`), which is what
 makes splitting by session possible later.

@@ -16,7 +16,8 @@ accuracy it loses.
 ## Pipeline
 
 ```
-capture.py -> data/raw/<class>/            record webcam frames per session
+prepare_hagrid.py -> data/raw/<class>/     open HaGRID dataset -> our 4 classes (by person)
+capture.py -> data/raw/<class>/            or record your own webcam frames per session
 make_splits.py -> data/splits/*.csv         70/15/15 split BY SESSION
 train.py -> models/fp32.pth                 MobileNetV2, frozen then fine-tuned
 evaluate.py                                 accuracy, precision/recall, confusion matrix
@@ -56,7 +57,38 @@ pip install -r requirements.txt
 
 Run every command from the project folder (the one containing `src/`).
 
-## 1. Record data
+## 1. Get data
+
+There are two options, and you can combine them (both write to `data/raw/`).
+
+### Option A: open dataset (HaGRID), no recording needed
+
+[HaGRID](https://github.com/hukenovs/hagrid) is a public hand-gesture dataset with
+photos of thousands of different people. `src/prepare_hagrid.py` maps it onto our classes:
+`palm` → stop, `like` → resume, `fist` → pause, and other gestures / relaxed hands /
+empty background → none. It crops a square around each hand and uses HaGRID's anonymous
+`user_id` as the session id, so the train/val/test split is **by person**.
+
+1. Download a HaGRID sample. The 30k-image, 384p sample on Hugging Face is a good size
+   for a laptop (a few GB):
+   ```bash
+   pip install -U "huggingface_hub[cli]"
+   hf download cj-mills/hagrid-sample-30k-384p --repo-type dataset --local-dir hagrid_download
+   ```
+   (Older `huggingface_hub` versions use `huggingface-cli download` with the same arguments.)
+   You can also use any download from the official HaGRID GitHub page instead.
+2. Extract every `.zip` inside `hagrid_download` (e.g. right-click → Extract All on
+   Windows, `unzip` on Linux).
+3. Convert:
+   ```bash
+   python src/prepare_hagrid.py --hagrid-dir hagrid_download --per-class 2000
+   ```
+   The script searches the folder recursively for HaGRID annotation `.json` files and
+   images, and prints how many crops per class it saved. Re-running it replaces its own
+   previous output (files starting with `hagrid-`) and leaves your own recordings alone.
+   `hagrid_download/` is in `.gitignore`.
+
+### Option B: record your own data
 
 ```bash
 python src/capture.py
@@ -124,7 +156,11 @@ _No results yet. Run `python src/run_all.py` to generate them._
   are still required.
 - **Single 2D camera.** No depth; sensitive to viewpoint, occlusion, lighting and
   backgrounds that differ from the recorded ones. Only one hand/person is assumed.
-- **Small self-recorded dataset.** Few people, rooms and sessions, so the test
+- **Dataset domain gap.** HaGRID photos (people standing 0.5–4 m from a phone camera,
+  hand crops) differ from a laptop webcam a hand's length away. Adding a few of your own
+  `capture.py` sessions helps the live demo; the test accuracy is measured on the data's
+  own test people, not on your webcam.
+- **Small self-recorded dataset** (if you record your own). Few people, rooms and sessions, so the test
   accuracy says how well it works in conditions like the recordings, not in general.
 - Classifies each frame independently (no temporal smoothing), so single-frame
   flicker is possible.
